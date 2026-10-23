@@ -21,6 +21,14 @@ namespace NewSimulator.World
             set => settings = value;
         }
 
+        public void ConfigureMaterials(Material ground, Material road, Material sidewalk, Material[] buildings)
+        {
+            groundMaterial = ground;
+            roadMaterial = road;
+            sidewalkMaterial = sidewalk;
+            buildingMaterials = buildings;
+        }
+
         [ContextMenu("Generate City")]
         public void Generate()
         {
