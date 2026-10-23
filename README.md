@@ -1,22 +1,25 @@
 # New Simulator
 
-A long-term Unity HDRP project for a photorealistic, explorable urban world written primarily in C#.
+A long-term Unreal Engine C++ project for a photorealistic, explorable, procedurally generated world.
 
-The repository is being initialized in functional versions. Version 0.1 establishes project architecture, editor automation, a first-person/free-roam camera, lighting/environment foundations, and a procedural demonstration scene.
+The project restarted from its earlier Unity prototype on October 22, 2026. Unreal Engine 5.8 is now the engine baseline because Epic officially supports Visual Studio 2026 for general UE 5.8 development and because Unreal's large-world and high-fidelity toolset aligns well with the project goal.
 
-> Toolchain note: the exact Unity and HDRP versions are intentionally not pinned until the local Visual Studio version is confirmed. See `docs/setup.md` and `docs/current-status.md`.
+## Technology direction
 
-## Goals
-
-- Photorealistic rendering using Unity High Definition Render Pipeline
-- Scalable procedural and semi-procedural city generation
-- Clean C# architecture with focused systems and namespaces
-- Physically based materials, lighting, reflections, atmosphere, and weather
-- Long-term support for vehicles, pedestrians, traffic, streaming, interaction, and multiplayer
-- Editor automation for repeatable scene and project setup
+- Unreal Engine 5.8
+- C++ as the primary programming language
+- Visual Studio 2026 Community 18.11.0
+- Lumen global illumination and reflections
+- Nanite-ready asset architecture
+- Virtual Shadow Maps
+- PCG for procedural worldbuilding
+- World Partition for future large-world streaming
+- Substrate for advanced physically based materials where appropriate
 
 ## Current milestone
 
-**Version 0.1 foundation**
+**Version 0.1 Unreal restart**
 
-See `docs/current-status.md` for the exact development state and next step.
+The repository contains a compile-oriented C++ foundation, free-flight inspection pawn, deterministic procedural city massing actor, baseline rendering configuration, Unreal-specific Git hygiene, and project documentation.
+
+See `docs/current-status.md` for the exact next step.

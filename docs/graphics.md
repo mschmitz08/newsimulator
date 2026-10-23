@@ -1,26 +1,23 @@
 # Graphics Direction
 
-Photorealism is a foundational requirement. The intended renderer is Unity HDRP.
+Photorealism is a foundational requirement.
 
-## Baseline goals
+## Unreal rendering baseline
 
-- Physically based materials using plausible metallic, smoothness/roughness, normal, ambient-occlusion, and detail values
-- Physically plausible sunlight and exposure
-- HDRP sky and atmospheric systems
-- High quality anti-aliasing
-- Screen-space reflections and reflection probes
-- Ray-traced reflections and other ray-traced effects where hardware and target performance allow
-- Global illumination where practical
-- Ambient occlusion
-- Volumetric fog
-- Realistic glass and polished surfaces
-- Wet-surface response after rain
-- restrained post-processing rather than exaggerated cinematic grading
+- Lumen for dynamic global illumination and reflections
+- Virtual Shadow Maps for high-detail dynamic shadows
+- Nanite-ready geometry and asset policy
+- Temporal Super Resolution as the initial anti-aliasing/upscaling baseline
+- DirectX 12 on Windows
+- physically plausible lighting values
+- realistic sky, atmosphere, clouds, fog, exposure, and tone mapping
+- Substrate for advanced layered physically based materials where it materially improves realism
+- high-quality glass, wet surfaces, vehicle reflections, polished materials, and nighttime emissive detail
+
+## Scalability
+
+High-end rendering features need quality tiers. Hardware ray tracing may be added where it provides a measurable visual benefit, but the project must maintain viable non-ray-traced fallbacks.
 
 ## Version 0.1 boundary
 
-The first code milestone provides lighting and scene structure but deliberately does not hard-code a particular HDRP package API before the compatible Unity/HDRP version is selected. Once the Visual Studio version is confirmed, the project manifest, HDRP assets, default Volume Profile, exposure, sky, fog, reflection, and anti-aliasing settings will be pinned and generated.
-
-## Performance philosophy
-
-Visual quality should scale through quality tiers. Expensive features such as ray tracing must have rasterized fallbacks. Distant geometry should transition through LOD and eventually streaming rather than relying on a single enormous scene.
+Version 0.1 establishes engine rendering defaults and procedural massing. It does not yet claim final photorealistic materials or lighting. Those require authored materials, calibrated environment lighting, higher-quality geometry, and local GPU validation.

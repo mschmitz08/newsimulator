@@ -2,16 +2,16 @@
 
 Version 0.1 contains no third-party commercial art assets.
 
-The initial demonstration environment is generated from Unity primitive geometry and materials created by project editor tooling.
+The demonstration city uses Unreal Engine built-in basic cube geometry at runtime.
 
-When external assets are added, record at minimum:
+When external assets are added, record:
 
-- Asset name
-- Creator or publisher
-- Source
-- License
-- Redistribution restrictions
-- Version or acquisition date
-- Where the asset is used in the project
+- asset name
+- creator or publisher
+- source
+- license
+- redistribution restrictions
+- version or acquisition date
+- where it is used
 
-Do not commit copyrighted commercial assets unless the license explicitly allows repository redistribution.
+Do not commit Marketplace, Fab, photogrammetry, or other copyrighted commercial assets unless their license explicitly permits repository redistribution.

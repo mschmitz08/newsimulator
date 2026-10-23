@@ -2,31 +2,27 @@
 
 ## Principles
 
-New Simulator is organized as a long-lived Unity application rather than a single-scene prototype. Systems are separated by responsibility and communicate through small public APIs and configuration objects.
+New Simulator is a long-lived Unreal Engine application, not a disposable demo. C++ owns core systems and stable runtime behavior. Blueprints may expose configuration and presentation without becoming the only implementation of critical systems.
 
-## Planned namespaces
+## Planned modules and domains
 
-- `NewSimulator.Core` for application lifecycle and shared services
-- `NewSimulator.Player` for first-person and developer camera movement
-- `NewSimulator.World` for procedural city generation, roads, buildings, terrain, lots, and props
-- `NewSimulator.Rendering` for lighting, reflections, atmosphere, exposure, and HDRP-specific setup
-- `NewSimulator.Simulation` for time, weather, traffic, pedestrians, and vehicles
-- `NewSimulator.Persistence` for configuration and save data
-- `NewSimulator.Multiplayer` for future network abstractions
-- `NewSimulator.Editor` for repeatable Unity Editor setup and validation
+- Core: lifecycle, shared services, configuration
+- Player: first-person and developer movement
+- World: roads, lots, blocks, buildings, terrain, props, PCG integration
+- Rendering: lighting, atmosphere, reflections, material policy, quality tiers
+- Simulation: time, weather, traffic, pedestrians, vehicles
+- Persistence: configuration and save data
+- Multiplayer: future authoritative state and replication boundaries
+- Editor tooling: repeatable generation, validation, import, and setup helpers
 
-## World organization
+## Large-world direction
 
-The long-term world will be divided into streamable chunks. Version 0.1 intentionally generates only a small demonstration district, but generation APIs use explicit settings and deterministic seeds so the same concepts can scale later.
+World Partition will become the spatial streaming backbone. Generation must be deterministic and chunk-aware so neighboring cells agree on continuous features such as roads and utilities.
 
-## Rendering boundary
+## C++ and Blueprint boundary
 
-Runtime gameplay code should avoid unnecessary direct dependencies on HDRP-only APIs. HDRP setup and validation belongs in the rendering and editor layers. This keeps world logic testable while preserving HDRP as the intended renderer.
+C++ defines reusable systems and data contracts. Blueprints are appropriate for asset references, tuning, UI, visualization, and authored exceptions. Avoid burying foundational simulation logic in opaque Blueprint graphs.
 
-## Asset strategy
+## Assets
 
-Source code and lightweight Unity YAML assets remain in Git. Large binary source assets should use Git LFS. Third-party commercial content must not be committed unless redistribution rights permit it.
-
-## Future multiplayer
-
-Simulation state should eventually be separated from presentation so authoritative state can be synchronized without rewriting world generation, traffic, or player systems.
+Large Unreal binary assets use Git LFS. Commercial Marketplace or Fab assets are not committed unless redistribution rights explicitly allow it.

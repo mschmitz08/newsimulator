@@ -1,12 +1,13 @@
 # Known Limitations
 
-## Version 0.1 foundation
+## Version 0.1 Unreal restart
 
-- The exact Unity Editor, HDRP package, .NET profile, and C# language version are not pinned because the local Visual Studio version has not yet been confirmed.
-- The generated city uses primitive geometry for massing rather than production buildings.
-- Road generation is currently an orthogonal grid and does not yet create lane topology, curbs, intersections, traffic signals, parking, or road markings.
-- Buildings do not yet generate windows, facade modules, interiors, roofs, doors, nighttime illumination, or true glass.
-- The Global Volume object is created but its production HDRP profile is intentionally deferred until the compatible HDRP version is selected.
-- No weather, time-of-day cycle, vehicles, pedestrians, streaming, LOD generation, save data, or multiplayer implementation exists yet.
-- The camera currently uses Unity's legacy Input API to avoid requiring an input package before the toolchain is pinned.
-- The code has been statically reviewed, but Unity Editor compilation and Play Mode behavior still require local validation.
+- The project has been statically reviewed but not compiled locally through Unreal Build Tool yet.
+- The city uses engine cube geometry for massing rather than production assets.
+- No authored photorealistic materials are included yet.
+- Roads are an orthogonal grid without lanes, curbs, markings, signals, parking, or intersection topology.
+- Buildings do not yet have facade grammar, windows, roofs, doors, interiors, or nighttime illumination.
+- Runtime bootstrap currently provides only basic directional and skylight illumination, not the final sky/atmosphere/cloud/fog stack.
+- World Partition, HLOD generation, traffic, pedestrians, vehicles, weather, save data, and multiplayer are not implemented yet.
+- PCG is enabled but not yet used by Version 0.1 code.
+- No commercial or external art assets are included.

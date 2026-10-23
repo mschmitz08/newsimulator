@@ -2,33 +2,27 @@
 
 ## Version 0.1
 
-The initial generator creates a deterministic grid-based demonstration district from a `ProceduralCitySettings` asset. It generates ground, orthogonal roads, raised block surfaces, and varied building massing. Building height, footprint width, footprint depth, and material selection vary using a seeded random sequence.
+`AProceduralCityActor` generates a deterministic orthogonal demonstration district at runtime using engine cube geometry. It creates ground, roads, sidewalks, and varied building massing with a seeded `FRandomStream`.
 
-This geometry is intentionally a foundation rather than the final city representation.
+The primitive geometry is intentionally temporary. The generation architecture is the reusable part.
 
-## Design direction
+## Long-term pipeline
 
-Later versions should separate the world pipeline into stages:
-
-1. Road graph generation or import
+1. Road graph generation or geographic import
 2. Intersection classification
 3. Block polygon derivation
 4. Lot subdivision
-5. Sidewalk and curb generation
+5. Sidewalk, curb, median, and lane topology
 6. Building footprint generation
 7. Building grammar and facade generation
-8. Parking and service-area generation
-9. Street furniture and vegetation placement
-10. LOD generation and chunk assignment
+8. Parking and service areas
+9. PCG-driven props, vegetation, utilities, and detail
+10. World Partition cell assignment and HLOD preparation
 
 ## Determinism
 
-A world seed is stored in configuration. Given the same generator version, inputs, and seed, generated layouts should be reproducible. This will support debugging, streaming, save data, and future multiplayer.
+Generation should remain reproducible from a world seed plus generator version. This supports debugging, streaming, save data, and future multiplayer.
 
-## Scalability
+## PCG
 
-Future world chunks should own generation outputs rather than placing an entire city under one monolithic object. Neighboring chunks must share deterministic boundary data for roads and other continuous infrastructure.
-
-## Asset replacement
-
-Procedural massing should expose material and prefab catalogs so higher-quality authored or photogrammetry assets can replace generated pieces without rewriting the road and lot logic.
+Epic's PCG framework will be used where its graph model improves iteration and large-scale placement. Core city topology should remain represented by stable C++ data structures so it can be tested, saved, imported, and replicated independently of visual graphs.

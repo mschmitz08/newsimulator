@@ -2,47 +2,38 @@
 
 ## Confirmed toolchain
 
-The local IDE has been confirmed as Visual Studio 2026 Community, stable channel, version 18.11.0.
+- Visual Studio 2026 Community 18.11.0
+- Unreal Engine 5.8
+- Windows development with DirectX 12
 
-The project is pinned to Unity 6.3 LTS, editor version 6000.3.27f1. Unity 6.3 is the current long-term-support line and is the preferred baseline for this serious long-term project rather than a shorter-lived Update release.
-
-HDRP is provided as the Unity 6.3 core package line and the project manifest currently requests `com.unity.render-pipelines.high-definition` 17.2.0. Visual Studio integration is provided by `com.unity.ide.visualstudio`.
+Epic's UE 5.8 documentation lists Visual Studio 2026 18.0 or later as supported and recommended for general Windows development.
 
 ## Required local software
 
-1. Visual Studio 2026 Community 18.11.0 or newer compatible update.
-2. In Visual Studio Installer, enable the `Game development with Unity` workload.
-3. Install Unity Hub.
-4. Install Unity 6000.3.27f1 through Unity Hub with Windows Build Support if Windows standalone builds are desired.
-5. Install Git LFS before adding large binary assets.
+1. Install Epic Games Launcher.
+2. Install the latest Unreal Engine 5.8 hotfix available in the launcher.
+3. In Visual Studio Installer, enable `Game development with C++` and the Unreal Engine tooling/components offered by Visual Studio.
+4. Ensure a current Windows SDK is installed. Epic recommends Windows SDK 10.0.26100 or newer for UE 5.8.
+5. Install Git LFS.
 
 ## Opening the project
 
 1. Clone or pull `mschmitz08/newsimulator`.
-2. In Unity Hub, choose Add project from disk and select the repository root.
-3. Open it with Unity 6000.3.27f1.
-4. Allow Unity Package Manager to restore the packages from `Packages/manifest.json`.
-5. Wait for the initial script and shader import to finish.
-6. If Unity prompts to upgrade or repair HDRP project settings, use the HDRP Wizard recommendations and report anything it changes unexpectedly.
-7. Set Visual Studio 2026 as the external script editor if Unity does not detect it automatically.
-8. Run `New Simulator > Validate Project Setup`.
-9. Run `New Simulator > Generate Version 0.1 Demo Scene`.
-10. Open `Assets/Scenes/Version01Demo.unity` and enter Play Mode.
+2. Double-click `NewSimulator.uproject`.
+3. If Unreal asks to rebuild missing modules, choose Yes.
+4. If project files are needed, right-click `NewSimulator.uproject` in Windows Explorer and choose `Generate Visual Studio project files`, then open the generated solution.
+5. Let Unreal compile shaders and build derived data.
+6. Open or create an empty level and press Play. The game mode automatically spawns the procedural city, basic sun/skylight, and free-flight pawn for Version 0.1 validation.
 
 ## Controls
 
 - W A S D: move
 - Mouse: look
+- Q / E: descend / ascend
 - Left Shift: sprint
-- Q / E: move down/up in free-flight mode
-- F: toggle free-flight
-- Escape: release mouse cursor
-- Left mouse button: recapture mouse cursor
+- Escape: release cursor
+- Left mouse: recapture cursor
 
-## First local validation report
+## First validation report
 
-Please report any red compiler errors first. Also report package restore failures, HDRP Wizard warnings, magenta materials, missing shaders, broken scene generation, or camera input problems. Unity itself cannot be executed through the GitHub connector, so local Editor validation is the final check for this milestone.
-
-## Git
-
-Unity generated cache folders are excluded by `.gitignore`. Keep `Library`, `Temp`, `Logs`, `obj`, build output, and IDE-generated project files out of source control. Use Git LFS for large textures, models, audio, video, and other appropriate binary assets.
+Report C++ compile errors first. Also report Unreal Build Tool errors, plugin errors, shader compilation failures, crashes, rendering warnings, input problems, or unexpected blank/black scenes.

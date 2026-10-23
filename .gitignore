@@ -1,46 +1,34 @@
-# Unity generated folders
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
-/[Mm]emoryCaptures/
-/[Rr]ecordings/
-
-# Asset Store tools
-/Assets/AssetStoreTools*
-
-# IDE files
+# Unreal Engine generated folders
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
 .vs/
-.idea/
-.vscode/
-*.csproj
+
+# Generated IDE/project files
 *.sln
+*.VC.db
+*.VC.opendb
+*.opensdf
+*.sdf
 *.suo
 *.user
 *.userprefs
-*.pidb
-*.booproj
-*.svd
-*.pdb
-*.mdb
-*.opendb
-*.VC.db
+
+# Build/package output
+Build/Receipts/
+StagedBuilds/
+
+# Rider / VS Code
+.idea/
+.vscode/
 
 # OS files
 .DS_Store
 Thumbs.db
 Desktop.ini
 
-# Crash and diagnostics
-sysinfo.txt
-*.stackdump
-
-# Addressables generated data
-/ServerData/
-
-# Temporary archives
+# Temporary files
 *.tmp
 *.bak
+*.log
