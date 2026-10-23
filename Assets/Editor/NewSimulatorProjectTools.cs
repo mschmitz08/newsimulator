@@ -13,6 +13,7 @@ namespace NewSimulator.Editor
     {
         private const string SettingsFolder = "Assets/Settings";
         private const string SettingsPath = SettingsFolder + "/ProceduralCitySettings.asset";
+        private const string MaterialsFolder = "Assets/Materials/Generated";
         private const string SceneFolder = "Assets/Scenes";
         private const string ScenePath = SceneFolder + "/Version01Demo.unity";
 
@@ -20,6 +21,7 @@ namespace NewSimulator.Editor
         public static void GenerateVersion01DemoScene()
         {
             EnsureFolder(SettingsFolder);
+            EnsureFolder(MaterialsFolder);
             EnsureFolder(SceneFolder);
 
             ProceduralCitySettings settings = AssetDatabase.LoadAssetAtPath<ProceduralCitySettings>(SettingsPath);
@@ -29,12 +31,22 @@ namespace NewSimulator.Editor
                 AssetDatabase.CreateAsset(settings, SettingsPath);
             }
 
+            Material ground = GetOrCreateMaterial("Ground", new Color(0.18f, 0.22f, 0.16f), 0f, 0.18f);
+            Material road = GetOrCreateMaterial("Asphalt", new Color(0.045f, 0.05f, 0.055f), 0f, 0.28f);
+            Material sidewalk = GetOrCreateMaterial("Concrete", new Color(0.43f, 0.44f, 0.43f), 0f, 0.3f);
+            Material[] buildings =
+            {
+                GetOrCreateMaterial("WarmConcrete", new Color(0.48f, 0.42f, 0.34f), 0f, 0.35f),
+                GetOrCreateMaterial("DarkGlassMassing", new Color(0.08f, 0.12f, 0.16f), 0.05f, 0.82f),
+                GetOrCreateMaterial("SteelMassing", new Color(0.24f, 0.27f, 0.3f), 0.72f, 0.58f),
+                GetOrCreateMaterial("BrickMassing", new Color(0.36f, 0.12f, 0.075f), 0f, 0.3f)
+            };
+
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            scene.name = "Version01Demo";
 
             CreateCamera();
             CreateSun();
-            CreateCity(settings);
+            CreateCity(settings, ground, road, sidewalk, buildings);
             CreateGlobalVolumePlaceholder();
 
             EditorSceneManager.SaveScene(scene, ScenePath);
@@ -63,6 +75,12 @@ namespace NewSimulator.Editor
                 warnings++;
             }
 
+            if (Shader.Find("HDRP/Lit") == null)
+            {
+                Debug.LogWarning("HDRP/Lit shader was not found. Verify that HDRP is installed and active.");
+                warnings++;
+            }
+
             if (AssetDatabase.LoadAssetAtPath<ProceduralCitySettings>(SettingsPath) == null)
             {
                 Debug.LogWarning("Procedural city settings do not exist yet. Run Generate Version 0.1 Demo Scene.");
@@ -75,10 +93,9 @@ namespace NewSimulator.Editor
                 warnings++;
             }
 
-            string colorSpace = PlayerSettings.colorSpace.ToString();
             if (PlayerSettings.colorSpace != ColorSpace.Linear)
             {
-                Debug.LogWarning($"Color space is {colorSpace}. Photorealistic HDRP projects should use Linear color space.");
+                Debug.LogWarning($"Color space is {PlayerSettings.colorSpace}. Photorealistic HDRP projects should use Linear color space.");
                 warnings++;
             }
 
@@ -107,11 +124,12 @@ namespace NewSimulator.Editor
             light.shadows = LightShadows.Soft;
         }
 
-        private static void CreateCity(ProceduralCitySettings settings)
+        private static void CreateCity(ProceduralCitySettings settings, Material ground, Material road, Material sidewalk, Material[] buildings)
         {
             GameObject cityObject = new GameObject("Generated City");
             ProceduralCityGenerator generator = cityObject.AddComponent<ProceduralCityGenerator>();
             generator.Settings = settings;
+            generator.ConfigureMaterials(ground, road, sidewalk, buildings);
             generator.Generate();
         }
 
@@ -121,6 +139,28 @@ namespace NewSimulator.Editor
             Volume volume = volumeObject.AddComponent<Volume>();
             volume.isGlobal = true;
             volume.priority = 0f;
+        }
+
+        private static Material GetOrCreateMaterial(string name, Color color, float metallic, float smoothness)
+        {
+            string path = $"{MaterialsFolder}/{name}.mat";
+            Material existing = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (existing != null) return existing;
+
+            Shader shader = Shader.Find("HDRP/Lit") ?? Shader.Find("Standard");
+            if (shader == null)
+            {
+                Debug.LogError("No compatible Lit shader could be found.");
+                return null;
+            }
+
+            Material material = new Material(shader) { name = name };
+            if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
+            else if (material.HasProperty("_Color")) material.SetColor("_Color", color);
+            if (material.HasProperty("_Metallic")) material.SetFloat("_Metallic", metallic);
+            if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", smoothness);
+            AssetDatabase.CreateAsset(material, path);
+            return material;
         }
 
         private static void EnsureFolder(string path)
